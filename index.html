@@ -1,69 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
-    integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+  <meta name="description" content="A modern shopping list app" />
+  <meta name="theme-color" content="#6c5ce7" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
   <title>Shopping List</title>
 </head>
-
 <body>
-  <div class="container">
-    <header>
-      <img src="images/note.png" alt="" />
-      <h1>Shopping List</h1>
-    </header>
-    <form id="item-form">
-      <div class="form-control">
-        <input type="text" class="form-input" id="item-input" name="item" placeholder="Enter Item" />
+  <div class="app-bar">
+    <div class="app-bar-inner">
+      <div class="app-bar-brand">
+        <img src="/images/note.png" alt="" class="app-logo" />
+        <h1 class="app-title">Shopping List</h1>
       </div>
-      <div class="form-control">
-        <button type="submit" class="btn">
-          <i class="fa-solid fa-plus"></i> Add Item
+      <div class="app-bar-actions">
+        <span id="stats" class="stats-badge">0 items</span>
+        <button id="theme-toggle" class="btn-icon" title="Toggle theme" aria-label="Toggle dark/light mode">
+          <i class="fa-solid fa-moon"></i>
         </button>
       </div>
-    </form>
-
-    <div class="filter">
-      <input type="text" class="form-input-filter" id="filter" placeholder="Filter Items" />
     </div>
-
-    <ul id="item-list" class="items">
-      <!-- <li>
-        Apples
-        <button class="remove-item btn-link text-red">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </li>
-      <li>
-        Orange Juice
-        <button class="remove-item btn-link text-red">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </li>
-      <li>
-        Oreos
-        <button class="remove-item btn-link text-red">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </li>
-      <li>
-        Milk
-        <button class="remove-item btn-link text-red">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </li> -->
-    </ul>
-
-    <button id="clear" class="btn-clear">Clear All</button>
   </div>
 
-  <script src="script.js"></script>
-</body>
+  <main class="container">
+    <section class="card card-form" aria-label="Add item form">
+      <form id="item-form">
+        <div class="form-row">
+          <div class="form-group form-group--grow">
+            <label for="item-input" class="form-label">Item name</label>
+            <input
+              type="text"
+              id="item-input"
+              class="form-input"
+              placeholder="e.g. Apples, Milk..."
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group form-group--compact">
+            <label for="item-quantity" class="form-label">Qty</label>
+            <input
+              type="number"
+              id="item-quantity"
+              class="form-input form-input--sm"
+              value="1"
+              min="1"
+              max="99"
+            />
+          </div>
+          <div class="form-group form-group--compact">
+            <label for="item-category" class="form-label">Category</label>
+            <select id="item-category" class="form-input form-input--sm">
+              <option value="produce">Produce</option>
+              <option value="dairy">Dairy</option>
+              <option value="meat">Meat</option>
+              <option value="bakery">Bakery</option>
+              <option value="frozen">Frozen</option>
+              <option value="pantry">Pantry</option>
+              <option value="household">Household</option>
+              <option value="other" selected>Other</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full">
+          <i class="fa-solid fa-plus"></i>
+          <span class="btn-text">Add Item</span>
+        </button>
+      </form>
+    </section>
 
+    <section class="card card-toolbar" aria-label="Search and sort controls">
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fa-solid fa-search search-icon"></i>
+          <input
+            type="text"
+            id="filter"
+            class="form-input form-input--search"
+            placeholder="Search items..."
+            autocomplete="off"
+          />
+          <button id="filter-clear" class="search-clear" aria-label="Clear search">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="toolbar-right">
+          <select id="sort-by" class="form-input form-input--sm form-input--select">
+            <option value="created">Newest</option>
+            <option value="name">Name</option>
+            <option value="category">Category</option>
+            <option value="purchased">Purchased</option>
+          </select>
+          <div class="toolbar-actions">
+            <div class="export-dropdown">
+              <button id="export-btn" class="btn-icon" title="Export list" aria-label="Export shopping list">
+                <i class="fa-solid fa-download"></i>
+              </button>
+              <div class="export-menu" id="export-menu">
+                <button data-format="json" class="export-option">Export JSON</button>
+                <button data-format="csv" class="export-option">Export CSV</button>
+              </div>
+            </div>
+            <input type="file" id="import-file" accept=".json,.csv" hidden />
+            <button id="import-btn" class="btn-icon" title="Import list" aria-label="Import shopping list">
+              <i class="fa-solid fa-upload"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card card-list" aria-label="Shopping list items">
+      <div id="empty-state" class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fa-solid fa-cart-plus"></i>
+        </div>
+        <h3 class="empty-state-title">Your list is empty</h3>
+        <p class="empty-state-text">Add your first item above to get started!</p>
+      </div>
+      <ul id="item-list" class="item-list"></ul>
+    </section>
+
+    <div class="list-footer">
+      <span id="item-count" class="item-count">0 items</span>
+      <button id="clear" class="btn btn--ghost btn--danger">
+        <i class="fa-solid fa-trash-can"></i>
+        Clear All
+      </button>
+    </div>
+  </main>
+
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>
